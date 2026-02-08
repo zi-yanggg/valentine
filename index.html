@@ -206,11 +206,11 @@
                                 style="font-variation-settings: 'FILL' 1">favorite</span>
                             YES, I'D LOVE TO!
                         </button>
-
-                        <div class="flex justify-center">
-                            <button
-                                class="min-w-[130px] sm:min-w-[150px] h-10 sm:h-11 px-5 sm:px-7 text-sm sm:text-base rounded-full bg-white/70 text-[#1b0d10] font-medium border border-black/10 transition-all hover:bg-white active:scale-95">
-                                Maybe no?
+                    
+                        <div class="flex justify-center relative">
+                            <button id="noBtn"
+                                class="min-w-[140px] sm:min-w-[160px] h-10 sm:h-11 px-6 sm:px-8 text-sm sm:text-base rounded-full bg-white/70 text-[#1b0d10] font-medium border border-black/10 transition-all hover:bg-white active:scale-95 relative z-10">
+                                Maybe no? 😅
                             </button>
                         </div>
                     </div>
@@ -275,9 +275,9 @@
                             Add to Calendar
                         </button> -->
 
-                        <p class="mt-6 sm:mt-8 text-gray-500 text-xs sm:text-sm text-center">
+                        <!-- <p class="mt-6 sm:mt-8 text-gray-500 text-xs sm:text-sm text-center">
                             Handcrafted with love ♡
-                        </p>
+                        </p> -->
                     </div>
                 </div>
             </div>
@@ -286,6 +286,7 @@
     </div>
 
     <script>
+        // Your existing hearts function
         function createHearts() {
             for (let i = 0; i < 8; i++) {
                 const heart = document.createElement('span');
@@ -301,8 +302,73 @@
             }
         }
 
+        // New funny NO button behavior
+        function makeNoButtonRunAway() {
+            const noBtn = document.getElementById('noBtn');
+            if (!noBtn) return;
+
+            let escapeCount = 0;
+            const maxEscapes = 4; // after 4 times → give up and beg
+
+            noBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // prevent default if needed
+
+                escapeCount++;
+
+                if (escapeCount >= maxEscapes) {
+                    // Final cute begging message
+                    alert("🥺🥺🥺 Okay okay... you win...\nBut my heart is already running towards you anyway...\n\nPlease? Just one little yes? 💗");
+                    noBtn.style.transform = 'scale(1)';
+                    noBtn.disabled = true;
+                    noBtn.textContent = "Okay... you broke me 😭";
+                    return;
+                }
+
+                // Shake + run away animation
+                noBtn.style.transition = 'all 0.4s ease';
+                noBtn.style.transform = 'scale(1.15)';
+
+                setTimeout(() => {
+                    noBtn.style.transform = 'scale(1) translate(' +
+                        (Math.random() * 120 - 60) + 'px, ' +
+                        (Math.random() * 80 - 40) + 'px)';
+                }, 100);
+
+                // Random funny messages
+                const funnyReplies = [
+                    "Hey! Come back here! 😤",
+                    "Noooo don't goooo~",
+                    "That's not fairrr! 😭",
+                    "My heart just did a backflip...",
+                    "You're breaking my little glass heart...",
+                    "Please reconsider... I have snacks! 🍫",
+                    "Are you sure? I'm very good at pooping..."
+                ];
+
+                noBtn.textContent = funnyReplies[Math.floor(Math.random() * funnyReplies.length)];
+
+                // Reset text after a while
+                setTimeout(() => {
+                    if (escapeCount < maxEscapes) {
+                        noBtn.textContent = "Maybe no? 😅";
+                    }
+                }, 1800);
+            });
+
+            // Bonus: shake on hover
+            noBtn.addEventListener('mouseenter', () => {
+                noBtn.classList.add('animate-shake');
+            });
+
+            noBtn.addEventListener('mouseleave', () => {
+                noBtn.classList.remove('animate-shake');
+            });
+        }
+
+        // Flip logic + trigger funny mode
         document.addEventListener('DOMContentLoaded', () => {
             createHearts();
+            makeNoButtonRunAway();
 
             const yesBtn = document.getElementById('yesBtn');
             const flipCard = document.getElementById('flipCard');
@@ -310,10 +376,54 @@
             if (yesBtn && flipCard) {
                 yesBtn.addEventListener('click', () => {
                     flipCard.classList.add('flipped');
+
+                    // Optional: little heart burst celebration
+                    for (let i = 0; i < 12; i++) {
+                        setTimeout(() => {
+                            const heart = document.createElement('span');
+                            heart.className = 'material-symbols-outlined text-4xl text-primary absolute';
+                            heart.style.fontVariationSettings = "'FILL' 1";
+                            heart.textContent = 'favorite';
+                            heart.style.left = Math.random() * 100 + 'vw';
+                            heart.style.top = Math.random() * 100 + 'vh';
+                            heart.style.transition = 'all 1.2s ease-out';
+                            document.body.appendChild(heart);
+
+                            setTimeout(() => {
+                                heart.style.transform = 'translateY(-150px) scale(2)';
+                                heart.style.opacity = '0';
+                            }, 100);
+                        }, i * 80);
+                    }
                 });
             }
         });
     </script>
+    
+    <!-- Add this CSS for shake animation -->
+    <style>
+        @keyframes shake {
+    
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+    
+            20%,
+            60% {
+                transform: translateX(-8px);
+            }
+    
+            40%,
+            80% {
+                transform: translateX(8px);
+            }
+        }
+    
+        .animate-shake {
+            animation: shake 0.5s;
+        }
+    </style>
 
 </body>
 
